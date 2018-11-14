@@ -1,0 +1,77 @@
+version: "3.7"
+
+services:
+  mongo:
+    image: mongo:latest
+    networks: 
+      - ecommerce
+
+  rabbit:
+    image: rabbitmq:latest
+    networks:
+      - ecommerce
+
+  redis:
+    image: redis:latest
+    networks: 
+      - ecommerce
+  
+  auth:
+    build: ./auth_node
+    env_file: ./auth_node/.env
+    ports:
+      - "3000:3000"
+      #-"${SERVER_PORT}:${SERVER_PORT}"
+    depends_on: 
+      - mongo
+      - rabbit
+    networks: 
+      - ecommerce
+
+  catalog:
+    image: gradle:latest
+    working_dir: /home/gradle/app
+    volumes:
+      - type: bind
+        source: /home/gonzo/Develop/ecommerce/catalog_java
+        target: /home/gradle/app
+    #No tiene .env este microservicio
+    ports:
+      - "3002:3002" #hardcoded
+    depends_on: 
+      - auth
+      - mongo
+      - rabbit
+    networks: 
+      - ecommerce
+    command: bash -c "gradle run"
+    
+  cart:
+    build: ./cart_node
+    env_file: ./cart_node/.env
+    ports:
+      - "3003:3003"
+      #-"${SERVER_PORT}:${SERVER_PORT}"
+    depends_on: 
+      - auth
+      - catalog
+      - mongo
+      - rabbit
+    networks: 
+      - ecommerce
+
+  image:
+    build: ./image_node
+    env_file: ./image_node/.env
+    ports:
+      - "3001:3001"
+      #-"${SERVER_PORT}:${SERVER_PORT}"
+    depends_on: 
+      - auth
+      - redis
+      - rabbit
+    networks: 
+      - ecommerce
+
+networks: 
+  ecommerce:
