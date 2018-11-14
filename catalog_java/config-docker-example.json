@@ -1,0 +1,7 @@
+{
+    "serverPort": 3002,
+    "databaseUrl": "mongo",
+    "securityServerUrl": "http://auth:3000",
+    "rabbitServerUrl": "rabbit",
+    "staticLocation": "www"
+}
