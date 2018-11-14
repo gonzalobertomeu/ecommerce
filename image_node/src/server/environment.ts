@@ -21,7 +21,7 @@ export function getConfig(environment: any): Config {
       redisHost: process.env.REDIS_HOST || "127.0.0.1",
       redisPort: Number(process.env.REDIS_PORT || "6379"),
       securityServer: process.env.SECURITY_SERVER || "http://localhost:3000",
-      rabbitUrl: process.env.SECURITY_SERVER || "amqp://localhost"
+      rabbitUrl: process.env.RABBIT_SERVER || "amqp://localhost"
     };
   }
   return config;
