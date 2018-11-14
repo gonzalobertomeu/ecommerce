@@ -20,7 +20,7 @@ export function getConfig(environment: any): Config {
       logLevel: process.env.LOG_LEVEL || "debug",
       mongoDb: process.env.MONGODB || "mongodb://localhost/cart",
       securityServer: process.env.SECURITY_SERVER || "http://localhost:3000",
-      catalogServer: process.env.SECURITY_SERVER || "http://localhost:3002",
+      catalogServer: process.env.CATALOG_SERVER || "http://localhost:3002",
       rabbitUrl: process.env.RABBIT_URL || "amqp://localhost"
     };
   }
